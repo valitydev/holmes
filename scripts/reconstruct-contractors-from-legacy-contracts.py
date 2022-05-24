@@ -88,8 +88,6 @@ def mk_change_contractor(contract_id, contractor_id):
     }
 
 
-userinfo = {'id': 'woorl', 'type': {'service_user': {}}}
-
 partymgmt_url = 'http://{host}:{port}/v1/processing/partymgmt'.format(
     host=os.environ.get('HELLGATE', 'hellgate'),
     port=os.environ.get('HELLGATE_PORT', 8022)
@@ -128,7 +126,6 @@ def migrate_party(party_id):
         claim = json.loads(woorl(
             '-s', '../damsel/ebin/dmsl_payment_processing_thrift.beam',
             partymgmt_url, 'PartyManagement', 'CreateClaim',
-            json.dumps(userinfo),
             json.dumps(party_id),
             json.dumps(changeset),
             dry_run_result='{"id":42, "revision":1}'
@@ -139,7 +136,6 @@ def migrate_party(party_id):
         woorl(
             '-s', '../damsel/ebin/dmsl_payment_processing_thrift.beam',
             partymgmt_url, 'PartyManagement', 'AcceptClaim',
-            json.dumps(userinfo),
             json.dumps(party_id),
             json.dumps(claim['id']),
             json.dumps(claim['revision'])

@@ -11,7 +11,7 @@ get_events () {
     "${WOORL[@]:-woorl}" \
         -s "${DAMSEL}/proto/payment_processing.thrift" \
         "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
-        Invoicing GetEvents "$1" "$2" "$3"
+        Invoicing GetEvents "$1" "$2"
 }
 
 case "$1" in
@@ -26,11 +26,10 @@ case "$1" in
         echo -e "  -h, --help      Show this help message."
         echo
         echo -e "More information:"
-        echo -e "  https://github.com/rbkmoney/damsel/blob/a603319/proto/payment_processing.thrift"
+        echo -e "  https://github.com/valitydev/damsel/blob/2e1dbc1a/proto/payment_processing.thrift#L1054-L1059"
         exit 0
         ;;
     * )
-        USERINFO="{\"id\":\"${SCRIPTNAME}\",\"type\":{\"service_user\":{}}}"
         INVOICE_ID="\"$1\""
         shift 1
         if [ -n "$1" ]; then
@@ -46,6 +45,6 @@ case "$1" in
         else
             RANGE="{\"limit\":${LIMIT}}"
         fi
-        get_events "$USERINFO" "$INVOICE_ID" "$RANGE" "$*"
+        get_events "$INVOICE_ID" "$RANGE"
         ;;
 esac

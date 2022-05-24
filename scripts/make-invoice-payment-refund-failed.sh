@@ -18,7 +18,7 @@ function usage {
   echo -e "  $(em refund_id)       Refund ID (string), last one by default."
   echo
   echo -e "More information:"
-  echo -e "  https://github.com/rbkmoney/damsel/blob/master/proto/payment_processing.thrift"
+  echo -e "  https://github.com/valitydev/damsel/blob/master/proto/payment_processing.thrift"
   exit 127
 }
 

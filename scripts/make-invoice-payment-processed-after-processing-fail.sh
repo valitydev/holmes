@@ -24,7 +24,7 @@ case ${INVOICE} in
     echo -e "  -h, --help      Show this help message."
     echo
     echo -e "More information:"
-    echo -e "  https://github.com/rbkmoney/damsel/blob/master/proto/payment_processing.thrift"
+    echo -e "  https://github.com/valitydev/damsel/blob/master/proto/payment_processing.thrift"
     exit 0
     ;;
   * )

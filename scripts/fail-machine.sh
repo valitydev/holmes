@@ -12,7 +12,7 @@ Usage: ${SCRIPTNAME} id [ns]
   ns      Machine namespace (string, default = invoice)
 
 More information:
-  https://github.com/rbkmoney/machinegun_proto
+  https://github.com/valitydev/machinegun-proto
 EOF
 )
 

@@ -14,8 +14,8 @@ Usage: ${SCRIPTNAME} plan-id batch-id
   batch-id    Posting batch ID (string)
 
 More information:
-  [1]: https://github.com/rbkmoney/damsel
-  [2]: https://github.com/rbkmoney/damsel/blob/b0806eb1/proto/accounter.thrift#L67
+  [1]: https://github.com/valitydev/damsel
+  [2]: https://github.com/valitydev/damsel/blob/d384c125/proto/accounter.thrift#L70
 EOF
 )
 

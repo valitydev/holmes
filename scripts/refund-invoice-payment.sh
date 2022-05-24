@@ -18,7 +18,7 @@ function usage {
   echo -e "  $(em currency)        Currency code (string)."
   echo
   echo -e "More information:"
-  echo -e "  https://github.com/rbkmoney/damsel/blob/master/proto/payment_processing.thrift"
+  echo -e "  https://github.com/valitydev/damsel/blob/master/proto/payment_processing.thrift"
   exit 127
 }
 
@@ -30,11 +30,10 @@ CURCODE="${4}"
 [ -z "${INVOICE}" -o -z "${PAYMENT}" -o -z "${AMOUNT}" -o -z "${CURCODE}" ] && usage
 
 PARAMS=$(jq -nc "{cash:{amount:${AMOUNT}, currency:{symbolic_code:\"${CURCODE}\"}}}")
-USERINFO=$(jq -nc "{id:\"${SCRIPTNAME}\", type:{service_user:{}}}")
 
 [ -f woorlrc ] && source woorlrc
 
 "${WOORL[@]:-woorl}" \
     -s "${DAMSEL}/proto/payment_processing.thrift" \
     "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
-    Invoicing RefundPayment "${USERINFO}" "\"${INVOICE}\"" "\"${PAYMENT}\"" "${PARAMS}"
+    Invoicing RefundPayment "\"${INVOICE}\"" "\"${PAYMENT}\"" "${PARAMS}"
