@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CWD="$(dirname $0)"
-MGPROTO="${CWD}/../mgproto"
+MGPROTO="${CWD}/../machinegun-proto"
 
 USAGE=$(cat <<EOF
 Usage: ${SCRIPTNAME} id [ns]
