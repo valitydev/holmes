@@ -21,7 +21,7 @@ function usage {
   echo -e "  $(em minimum)          Minimum ID (number). The newly generated id would be equals to or bigger than the specified value."
   echo
   echo -e "More information:"
-  echo -e "  https://github.com/rbkmoney/bender-proto/blob/master/proto/bender.thrift"
+  echo -e "  https://github.com/valitydev/bender-proto/blob/master/proto/bender.thrift"
   exit $1
 }
 

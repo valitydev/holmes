@@ -8,10 +8,10 @@ DAMSEL="${CWD}/../../damsel"
 SCRIPTNAME=$(basename $0)
 
 get_party () {
-    "${WOORL[@]:-woorl}" $3 \
+    "${WOORL[@]:-woorl}" $2 \
         -s "${DAMSEL}/proto/payment_processing.thrift" \
         "http://${HELLGATE:-hellgate}:8022/v1/processing/partymgmt" \
-        PartyManagement Get "$1" "$2"
+        PartyManagement Get "$1"
 }
 
 case "$1" in
@@ -23,13 +23,12 @@ case "$1" in
         echo -e "  -h, --help      Show this help message."
         echo
         echo -e "More information:"
-        echo -e "  https://github.com/rbkmoney/damsel/blob/a603319/proto/payment_processing.thrift"
+        echo -e "  https://github.com/valitydev/damsel/blob/2e1dbc1a/proto/payment_processing.thrift#L2494-L2495"
         exit 0
         ;;
     * )
-        USERINFO="{\"id\":\"${SCRIPTNAME}\",\"type\":{\"service_user\":{}}}"
         PARTY_ID="\"$1\""
         shift 1
-        get_party "$USERINFO" "$PARTY_ID" "$*"
+        get_party "$PARTY_ID" "$*"
         ;;
 esac

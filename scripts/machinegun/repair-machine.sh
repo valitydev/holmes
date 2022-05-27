@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CWD="$(dirname $0)"
-MGPROTO="${CWD}/../../mgproto"
+MGPROTO="${CWD}/../../machinegun-proto"
 
 [ -f woorlrc ] && source woorlrc
 

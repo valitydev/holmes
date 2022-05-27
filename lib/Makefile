@@ -1,11 +1,11 @@
-REBAR := $(shell which rebar3 2>/dev/null || which ./rebar3)
+REBAR := rebar3
 RELDIR := $(CURDIR)/scripts
 
-.PHONY: all observer_cli
+.PHONY: all
 
-all: observer_cli
+all: $(RELDIR)/observer-cli
 
-observer_cli:
-	cd $@ && $(REBAR) as inet6 escriptize
+$(RELDIR)/observer-cli: observer_cli
+	cd $< && $(REBAR) escriptize
 	mkdir -p $(RELDIR)
-	cp $@/_build/inet6/bin/observer_cli $(RELDIR)/observer-cli
+	cp $</_build/default/bin/observer_cli $(RELDIR)/observer-cli

@@ -62,7 +62,7 @@ def call_keyring(cds_address, func, *args):
     json_args = [json.dumps(arg) for arg in args]
     woorl_args = \
         [
-            "woorl", "-s", "cds_proto/proto/keyring.thrift",
+            "woorl", "-s", "cds-proto/proto/keyring.thrift",
             "http://{}:{}/v2/keyring".format(cds_address, thrift_port),
             "KeyringManagement", func
         ] + json_args

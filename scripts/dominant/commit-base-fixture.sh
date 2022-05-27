@@ -18,7 +18,7 @@ case "$1" in
         echo -e "  -h, --help      help"
         echo
         echo -e "More information:"
-        echo -e "  https://github.com/rbkmoney/damsel/blob/a603319/proto/payment_processing.thrift"
+        echo -e "  https://github.com/valitydev/damsel/blob/master/proto/domain_config.thrift"
         exit 0
         ;;
     * )

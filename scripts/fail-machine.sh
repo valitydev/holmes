@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CWD="$(dirname $0)"
-MGPROTO="${CWD}/../mgproto"
+MGPROTO="${CWD}/../machinegun-proto"
 
 USAGE=$(cat <<EOF
 Usage: ${SCRIPTNAME} id [ns]
@@ -12,7 +12,7 @@ Usage: ${SCRIPTNAME} id [ns]
   ns      Machine namespace (string, default = invoice)
 
 More information:
-  https://github.com/rbkmoney/machinegun_proto
+  https://github.com/valitydev/machinegun-proto
 EOF
 )
 

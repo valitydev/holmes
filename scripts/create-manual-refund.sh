@@ -21,11 +21,10 @@ function usage {
   echo -e "  $(em reason)          Reason (string), $(em "Refunded manually") by default."
   echo
   echo -e "More information:"
-  echo -e "  https://github.com/rbkmoney/damsel/blob/master/proto/payment_processing.thrift"
+  echo -e "  https://github.com/valitydev/damsel/blob/master/proto/payment_processing.thrift"
   exit 127
 }
 
-USERINFO=$(jq -nc "{id:\"${SCRIPTNAME}\", type:{service_user:{}}}")
 INVOICE_ID="${1}"
 PAYMENT_ID="${2}"
 AMOUNT="${3}"
@@ -54,4 +53,4 @@ fi
 "${WOORL[@]:-woorl}" \
     -s "${DAMSEL}/proto/payment_processing.thrift" \
     "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
-    Invoicing CreateManualRefund "${USERINFO}" "\"${INVOICE_ID}\"" "\"${PAYMENT_ID}\"" "${PARAMS}"
+    Invoicing CreateManualRefund "\"${INVOICE_ID}\"" "\"${PAYMENT_ID}\"" "${PARAMS}"

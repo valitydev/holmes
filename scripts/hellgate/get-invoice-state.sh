@@ -11,7 +11,7 @@ get_state () {
     "${WOORL[@]:-woorl}" \
         -s "${DAMSEL}/proto/payment_processing.thrift" \
         "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
-        Invoicing Get "$1" "$2" "{}"
+        Invoicing Get "$1" "{}"
 }
 
 case "$1" in
@@ -23,13 +23,12 @@ case "$1" in
         echo -e "  -h, --help      Show this help message."
         echo
         echo -e "More information:"
-        echo -e "  https://github.com/rbkmoney/damsel/blob/a603319/proto/payment_processing.thrift"
+        echo -e "  https://github.com/valitydev/damsel/blob/2e1dbc1a/proto/payment_processing.thrift#L1049-L1052"
         exit 0
         ;;
     * )
-        USERINFO="{\"id\":\"${SCRIPTNAME}\",\"type\":{\"service_user\":{}}}"
         INVOICE_ID="\"$1\""
         shift 1
-        get_state "$USERINFO" "$INVOICE_ID"
+        get_state "$INVOICE_ID"
         ;;
 esac

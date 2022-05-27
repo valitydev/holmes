@@ -17,7 +17,7 @@ Usage: ${SCRIPTNAME} [--force] [--set-timeout SEC | --set-deadline TS | --unset-
   --force              To force appending changeset (which in effect turns state transitions validation off)
 
 More information:
-  https://github.com/rbkmoney/damsel
+  https://github.com/valitydev/damsel/blob/2e1dbc1a/proto/payment_processing.thrift#L1457-L1466
 EOF
 )
 
@@ -53,9 +53,7 @@ INVOICE_CHANGES="${2}"
 
 [ -f woorlrc ] && source woorlrc
 
-USERINFO='{"id":"woorl","type":{"service_user":{}}}'
-
 "${WOORL[@]:-woorl}" \
     -s "${DAMSEL}/proto/payment_processing.thrift" \
     "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
-    Invoicing Repair "${USERINFO}" "\"${INVOICE}\"" "${INVOICE_CHANGES}" "${ACTION}" "${PARAMS}"
+    Invoicing Repair "\"${INVOICE}\"" "${INVOICE_CHANGES}" "${ACTION}" "${PARAMS}"

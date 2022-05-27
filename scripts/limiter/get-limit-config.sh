@@ -18,7 +18,7 @@ USAGE=$(cat <<EOF
     $(em id)  Limit config ID (string)
 
   More information:
-    https://github.com/rbkmoney/limiter-proto/blob/master/proto/configurator.thrift
+    https://github.com/valitydev/limiter-proto/blob/master/proto/configurator.thrift
 EOF
 )
 

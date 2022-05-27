@@ -27,7 +27,7 @@ USAGE=$(cat <<EOF
     $(em --subtraction)                 Limiter behaviour when process payment refund. After refund limit will decrease on refund amount.
 
   More information:
-    https://github.com/rbkmoney/limiter-proto/blob/master/proto/configurator.thrift
+    https://github.com/valitydev/limiter-proto/blob/master/proto/configurator.thrift
 EOF
 )
 

@@ -1,31 +1,30 @@
-[submodule "build_utils"]
-	path = build_utils
-	url = git@github.com:rbkmoney/build_utils.git
-	branch = master
 [submodule "damsel"]
 	path = damsel
-	url = git@github.com:rbkmoney/damsel.git
+	url = https://github.com/valitydev/damsel.git
 	branch = master
 [submodule "lib/observer_cli"]
 	path = lib/observer_cli
-	url = https://github.com/keynslug/observer_cli
+	url = https://github.com/zhongwencool/observer_cli
 	branch = master
-[submodule "mgproto"]
-	path = mgproto
-	url = git@github.com:rbkmoney/machinegun_proto
-[submodule "cds_proto"]
-	path = cds_proto
-	url = git@github.com:rbkmoney/cds-proto.git
+[submodule "machinegun-proto"]
+	path = machinegun-proto
+	url = https://github.com/valitydev/machinegun-proto.git
+[submodule "cds-proto"]
+	path = cds-proto
+	url = https://github.com/valitydev/cds-proto.git
 	branch = master
 [submodule "bender-proto"]
 	path = bender-proto
-	url = git@github.com:rbkmoney/bender-proto.git
-[submodule "msgpack-proto"]
-	path = msgpack-proto
-	url = git@github.com:rbkmoney/msgpack-proto.git
+	url = https://github.com/valitydev/bender-proto.git
 [submodule "binbase-proto"]
 	path = binbase-proto
-	url = git@github.com:rbkmoney/binbase-proto.git
+	url = https://github.com/valitydev/binbase-proto.git
 [submodule "limiter-proto"]
 	path = limiter-proto
-	url = git@github.com:rbkmoney/limiter-proto.git
+	url = https://github.com/valitydev/limiter-proto.git
+[submodule "fistful-proto"]
+	path = fistful-proto
+	url = https://github.com/valitydev/fistful-proto.git
+[submodule "msgpack-proto"]
+	path = msgpack-proto
+	url = https://github.com/valitydev/msgpack-proto.git
