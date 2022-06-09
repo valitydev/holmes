@@ -3,8 +3,8 @@
 set -o errexit
 set -o pipefail
 
-CWD="$(dirname $0)"
-SCRIPTNAME=$(basename $0)
+CWD="$(dirname "$0")"
+SCRIPTNAME=$(basename "$0")
 LIMITER_PROTO="${CWD}/../../limiter-proto"
 
 trap "rm -rf ${LIMITER_PROTO}/proto/proto" EXIT
@@ -52,7 +52,7 @@ STARTED_AT="${2}"
 NAME="${3}"
 DESCRIPTION="${4}"
 
-[ -z "$ID" -o -z "$STARTED_AT" -o -z "$NAME" -o -z "$DESCRIPTION" ] && usage
+[ -z "$ID" ] || [ -z "$STARTED_AT" ] || [ -z "$NAME" ] || [ -z "$DESCRIPTION" ] && usage
 
 JSON=$(cat <<END
   {

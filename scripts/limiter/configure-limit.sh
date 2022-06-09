@@ -3,8 +3,8 @@
 set -o errexit
 set -o pipefail
 
-CWD="$(dirname $0)"
-SCRIPTNAME=$(basename $0)
+CWD="$(dirname "$0")"
+SCRIPTNAME=$(basename "$0")
 LIMITER_PROTO="${CWD}/../../limiter-proto"
 
 trap "rm -rf ${LIMITER_PROTO}/proto/proto" EXIT
@@ -86,7 +86,7 @@ case "${METRIC}" in
   *      ) usage ;;
 esac
 
-[ -z "$ID" -o -z "$STARTED_AT" -o -z "$DESCRIPTION" -o -z "$TIME_RANGE" ] && usage
+[ -z "$ID" ] || [ -z "$STARTED_AT" ] || [ -z "$DESCRIPTION" ] || [ -z "$TIME_RANGE" ] && usage
 
 JSON=$(cat <<END
   {
