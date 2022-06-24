@@ -12,23 +12,23 @@ trap "rm -rf ${LIMITER_PROTO}/proto/proto" EXIT
 source "${CWD}/../lib/logging"
 
 USAGE=$(cat <<EOF
+$(em Create configuration usage in limit counting.)
+Usage: ${SCRIPTNAME} --time-range=<range> [--scope=<scope>] [--turnover-metric=<metric>] [--currency=<code>] [--subtraction] [--shard-size=<size>] <id> <started-at> <description>
+  $(em id)                        Limit config ID (string)
+  $(em started-at)                Timestamp (RFC3339) Example: 2021-07-06T01:02:03Z
+  $(em description)               Limit description (string)
+  $(em --time-range)              Specify calendar time range ($(em day) | $(em week) | $(em month) | $(em year))
+  $(em --scope)                   Specify limit scope ($(em party) | $(em shop) | $(em paytool)) [default: global scope]
+                                   - Multiple scopes are allowed.
+  $(em --turnover-metric)         Select turnover metric ($(em number) | $(em amount))
+                                   - Metric $(em amount) aggregates operations' amounts denominated in selected currency. [default]
+                                   - Metric $(em number) counts number of operations.
+  $(em --currency)                Set currency for the $(em amount) turnover metric (ISO 4217). [default: $(em RUB)]
+  $(em --subtraction)             Limiter behaviour when process payment refund. After refund limit will decrease on refund amount.
+  $(em --shard-size)              Specify shard size [default: 1]
 
-  $(em Create configuration usage in limit counting.)
-  Usage: ${SCRIPTNAME} --time-range=<range> [--scope=(party|shop)] [--turnover-metric=<metric>] [--currency=<code>] [--subtraction] [--shard-size=<size>] <id> <started-at> <description>
-    $(em id)                        Limit config ID (string)
-    $(em started-at)                Timestamp (RFC3339) Example: 2021-07-06T01:02:03Z
-    $(em description)               Limit description (string)
-    $(em --time-range)              Specify calendar time range ($(em day) | $(em week) | $(em month) | $(em year))
-    $(em --scope)                   Specify limit scope [default: global scope]
-    $(em --turnover-metric)         Select turnover metric ($(em number) | $(em amount))
-                                     - Metric $(em amount) aggregates operations' amounts denominated in selected currency. [default]
-                                     - Metric $(em number) counts number of operations.
-    $(em --currency)                Set currency for the $(em amount) turnover metric (ISO 4217). [default: $(em RUB)]
-    $(em --subtraction)             Limiter behaviour when process payment refund. After refund limit will decrease on refund amount.
-    $(em --shard-size)              Specify shard size [default: 1]
-
-  More information:
-    https://github.com/valitydev/limiter-proto/blob/master/proto/configurator.thrift
+More information:
+  https://github.com/valitydev/limiter-proto/blob/master/proto/configurator.thrift
 EOF
 )
 
@@ -51,7 +51,7 @@ while true; do
   case "${1}" in
     --help                    ) usage ;;
     --time-range              ) TIME_RANGE="${2}" ; shift 2 ;;
-    --scope                   ) SCOPE="${2}" ; shift 2 ;;
+    --scope                   ) SCOPE+=("${2}") ; shift 2 ;;
     --turnover-metric         ) METRIC="${2}" ; shift 2 ;;
     --currency                ) CURRENCY="${2}" ; shift 2 ;;
     --subtraction             ) BEHAVIOUR="subtraction" ; shift 1 ;;
@@ -73,12 +73,16 @@ case "${TIME_RANGE}" in
   *     ) usage ;;
 esac
 
-case "${SCOPE}" in
-  party ) SCOPES="[{\"party\":{}}]" ;;
-  shop  ) SCOPES="[{\"shop\":{}}]" ;;
-  ""    ) SCOPES="[]" ;;
-  *     ) usage ;;
-esac
+SSEP=""
+for s in ${SCOPE[@]}; do
+  case "${s}" in
+    party   ) SCOPES="${SCOPES}${SSEP}{\"party\":{}}" ;;
+    shop    ) SCOPES="${SCOPES}${SSEP}{\"shop\":{}}" ;;
+    paytool ) SCOPES="${SCOPES}${SSEP}{\"payment_tool\":{}}" ;;
+    *       ) usage ;;
+  esac
+  SSEP=","
+done
 
 case "${METRIC}" in
   amount ) TURNOVER="{\"metric\": {\"amount\": {\"currency\": \"${CURRENCY}\"}}}" ;;
@@ -96,7 +100,7 @@ JSON=$(cat <<END
     "type": {"turnover": ${TURNOVER}},
     "time_range_type": {"calendar": ${CALENDAR_RANGE}},
     "shard_size": ${SHARD_SIZE},
-    "scope": {"multi": ${SCOPES}},
+    "scope": {"multi": [${SCOPES}]},
     "context_type": {"payment_processing": {}},
     "op_behaviour": {"invoice_payment_refund": {"${BEHAVIOUR}": {}}}
   }
