@@ -21,6 +21,7 @@ RUN apt-get --yes update \
         nano=5.4-2 \
         netcat-openbsd=1.217-3 \
         jq=1.6-2.1 \
+        postgresql-client-13=13.7-0+deb11u1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
