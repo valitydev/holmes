@@ -18,7 +18,7 @@ RUN apt-get --yes update \
         iputils-ping=3:20210202-1 \
         iputils-tracepath=3:20210202-1 \
         less=551-2 \
-        nano=5.4-2 \
+        nano=5.4-2+deb11u1 \
         netcat-openbsd=1.217-3 \
         jq=1.6-2.1 \
         postgresql-client-13=13.7-0+deb11u1 \
