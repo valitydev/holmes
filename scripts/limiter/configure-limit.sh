@@ -86,7 +86,7 @@ done
 
 case "${METRIC}" in
   amount ) TURNOVER="{\"metric\": {\"amount\": {\"currency\": \"${CURRENCY}\"}}}" ;;
-  number ) TURNOVER="{\"metric\": {\"number\": {}}" ;;
+  number ) TURNOVER="{\"metric\": {\"number\": {}}}" ;;
   *      ) usage ;;
 esac
 
