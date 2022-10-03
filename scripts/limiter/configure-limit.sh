@@ -18,7 +18,7 @@ Usage: ${SCRIPTNAME} --time-range=<range> [--scope=<scope>] [--turnover-metric=<
   $(em started-at)                Timestamp (RFC3339) Example: 2021-07-06T01:02:03Z
   $(em description)               Limit description (string)
   $(em --time-range)              Specify calendar time range ($(em day) | $(em week) | $(em month) | $(em year))
-  $(em --scope)                   Specify limit scope ($(em party) | $(em shop) | $(em paytool)) [default: global scope]
+  $(em --scope)                   Specify limit scope ($(em party) | $(em shop) | $(em paytool) | $(em wallet) | $(em identity) | $(em provider) | $(em terminal) | $(em email)) [default: global scope]
                                    - Multiple scopes are allowed.
   $(em --turnover-metric)         Select turnover metric ($(em number) | $(em amount))
                                    - Metric $(em amount) aggregates operations' amounts denominated in selected currency. [default]
@@ -76,10 +76,15 @@ esac
 SSEP=""
 for s in ${SCOPE[@]}; do
   case "${s}" in
-    party   ) SCOPES="${SCOPES}${SSEP}{\"party\":{}}" ;;
-    shop    ) SCOPES="${SCOPES}${SSEP}{\"shop\":{}}" ;;
-    paytool ) SCOPES="${SCOPES}${SSEP}{\"payment_tool\":{}}" ;;
-    *       ) usage ;;
+    party        ) SCOPES="${SCOPES}${SSEP}{\"party\":{}}" ;;
+    shop         ) SCOPES="${SCOPES}${SSEP}{\"shop\":{}}" ;;
+    wallet       ) SCOPES="${SCOPES}${SSEP}{\"wallet\":{}}" ;;
+    identity     ) SCOPES="${SCOPES}${SSEP}{\"identity\":{}}" ;;
+    paytool      ) SCOPES="${SCOPES}${SSEP}{\"payment_tool\":{}}" ;;
+    provider     ) SCOPES="${SCOPES}${SSEP}{\"provider\":{}}" ;;
+    terminal     ) SCOPES="${SCOPES}${SSEP}{\"terminal\":{}}" ;;
+    email        ) SCOPES="${SCOPES}${SSEP}{\"payer_contact_email\":{}}" ;;
+    *            ) usage ;;
   esac
   SSEP=","
 done
