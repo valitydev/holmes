@@ -11,17 +11,17 @@ FROM docker.io/library/erlang:${OTP_VERSION}
 
 RUN apt-get --yes update \
     && apt-get --yes --no-install-recommends install \
-        curl=7.74.0-1.3+deb11u1 \
-        bind9-dnsutils=1:9.16.27-1~deb11u1 \
-        git=1:2.30.2-1 \
-        iproute2=5.10.0-4 \
-        iputils-ping=3:20210202-1 \
-        iputils-tracepath=3:20210202-1 \
-        less=551-2 \
-        nano=5.4-2+deb11u1 \
-        netcat-openbsd=1.217-3 \
-        jq=1.6-2.1 \
-        postgresql-client-13=13.7-0+deb11u1 \
+        curl \
+        bind9-dnsutils \
+        git \
+        iproute2 \
+        iputils-ping \
+        iputils-tracepath \
+        less \
+        nano \
+        netcat-openbsd \
+        jq \
+        postgresql-client-13 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
