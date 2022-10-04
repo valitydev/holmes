@@ -18,6 +18,7 @@ Usage: ${SCRIPTNAME} --time-range=<range> [--scope=<scope>] [--turnover-metric=<
   $(em started-at)                Timestamp (RFC3339) Example: 2021-07-06T01:02:03Z
   $(em description)               Limit description (string)
   $(em --time-range)              Specify calendar time range ($(em day) | $(em week) | $(em month) | $(em year))
+  $(em --context)                 Specify limit context type ($(em payproc) | $(em withdrawal))
   $(em --scope)                   Specify limit scope ($(em party) | $(em shop) | $(em paytool) | $(em wallet) | $(em identity) | $(em provider) | $(em terminal) | $(em email)) [default: global scope]
                                    - Multiple scopes are allowed.
   $(em --turnover-metric)         Select turnover metric ($(em number) | $(em amount))
@@ -37,7 +38,7 @@ function usage {
     exit 127
 }
 
-TEMP=$(getopt -o "" --longoptions help,time-range:,scope:,turnover-metric:,currency:,subtraction -n "$SCRIPTNAME" -- "$@")
+TEMP=$(getopt -o "" --longoptions help,time-range:,context:,scope:,turnover-metric:,currency:,subtraction -n "$SCRIPTNAME" -- "$@")
 [ $? != 0 ] && usage
 
 eval set -- "$TEMP"
@@ -51,6 +52,7 @@ while true; do
   case "${1}" in
     --help                    ) usage ;;
     --time-range              ) TIME_RANGE="${2}" ; shift 2 ;;
+    --context                 ) CONTEXT="${2}" ; shift 2 ;;
     --scope                   ) SCOPE+=("${2}") ; shift 2 ;;
     --turnover-metric         ) METRIC="${2}" ; shift 2 ;;
     --currency                ) CURRENCY="${2}" ; shift 2 ;;
@@ -71,6 +73,12 @@ case "${TIME_RANGE}" in
   month ) CALENDAR_RANGE="{\"month\":{}}" ;;
   year  ) CALENDAR_RANGE="{\"year\":{}}" ;;
   *     ) usage ;;
+esac
+
+case "${CONTEXT}" in
+  payproc    ) CONTEXT_TYPE="{\"payment_processing\":{}}" ;;
+  withdrawal ) CONTEXT_TYPE="{\"withdrawal_processing\":{}}" ;;
+  *          ) usage ;;
 esac
 
 SSEP=""
@@ -95,7 +103,12 @@ case "${METRIC}" in
   *      ) usage ;;
 esac
 
-[ -z "$ID" ] || [ -z "$STARTED_AT" ] || [ -z "$DESCRIPTION" ] || [ -z "$TIME_RANGE" ] && usage
+[ -z "$ID" ] \
+  || [ -z "$CONTEXT_TYPE" ] \
+  || [ -z "$STARTED_AT" ] \
+  || [ -z "$DESCRIPTION" ] \
+  || [ -z "$TIME_RANGE" ] \
+  && usage
 
 JSON=$(cat <<END
   {
@@ -106,7 +119,7 @@ JSON=$(cat <<END
     "time_range_type": {"calendar": ${CALENDAR_RANGE}},
     "shard_size": ${SHARD_SIZE},
     "scope": {"multi": [${SCOPES}]},
-    "context_type": {"payment_processing": {}},
+    "context_type": ${CONTEXT_TYPE},
     "op_behaviour": {"invoice_payment_refund": {"${BEHAVIOUR}": {}}}
   }
 END
