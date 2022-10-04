@@ -7,6 +7,7 @@ CWD="$(dirname $0)"
 SCRIPTNAME=$(basename $0)
 LIMITER_PROTO="${CWD}/../../limiter-proto"
 
+ln -s "$(realpath "${CWD}/../../damsel/proto")" "${LIMITER_PROTO}/proto/proto"
 trap "rm -rf ${LIMITER_PROTO}/proto/proto" EXIT
 
 source "${CWD}/../lib/logging"
