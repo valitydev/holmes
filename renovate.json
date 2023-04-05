@@ -3,7 +3,7 @@
   "extends": [
     "local>valitydev/.github:renovate-config"
   ],
-  dependencyDashboard: true,
+  "dependencyDashboard": true,
   "git-submodules": {
     "enabled": true
   }
