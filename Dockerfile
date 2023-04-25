@@ -28,7 +28,7 @@ RUN apt-get --yes update \
 # step-cli
 ARG STEP_VERSION
 ARG TARGETARCH
-RUN wget -nv -O step-cli.deb "https://dl.step.sm/gh-release/cli/docs-cli-install/v${STEP_VERSION}/step-cli_${STEP_VERSION}_${TARGETARCH}.deb" \
+RUN wget -nv -O step-cli.deb "https://dl.step.sm/gh-release/cli/gh-release-header/v${STEP_VERSION}/step-cli_v${STEP_VERSION}_${TARGETARCH}.deb" \
     && dpkg -i step-cli.deb \
     && rm -vf step-cli.deb
 
