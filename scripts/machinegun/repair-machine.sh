@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CWD="$(dirname $0)"
 MGPROTO="${CWD}/../../machinegun-proto"
