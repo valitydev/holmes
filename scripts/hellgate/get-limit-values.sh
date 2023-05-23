@@ -29,9 +29,7 @@ case "$1" in
         ;;
     * )
         INVOICE_ID="\"$1\""
-        shift 1
-        PAYMENT_ID="\"$1\""
-        shift 1
+        PAYMENT_ID="\"$2\""
         get_limit_values "$INVOICE_ID" "$PAYMENT_ID"
         ;;
 esac
