@@ -28,3 +28,6 @@
 [submodule "msgpack-proto"]
 	path = msgpack-proto
 	url = https://github.com/valitydev/msgpack-proto.git
+[submodule "webhook-dispatcher-proto"]
+	path = webhook-dispatcher-proto
+	url = https://github.com/valitydev/webhook-dispatcher-proto.git
