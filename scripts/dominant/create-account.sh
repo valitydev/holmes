@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CWD="$(dirname $0)"
 DAMSEL="${CWD}/../../damsel"
