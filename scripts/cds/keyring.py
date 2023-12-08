@@ -58,7 +58,7 @@ def call(args, raw=False, stdin=""):
 
 
 def call_keyring(cds_address, func, *args):
-    thrift_port = os.environ["THRIFT_PORT"]
+    thrift_port = os.environ.get("THRIFT_PORT",8022)
     json_args = [json.dumps(arg) for arg in args]
     woorl_args = \
         [
@@ -136,7 +136,7 @@ def get_state(cds_address):
 
 
 def main(argv):
-    address = os.environ["CDS"]
+    address = os.environ.get("CDS","kds")
     help_promt = "usage: keyring.py {init | unlock | state}" \
                  " [-h | --help  | -a <woorl address>| --address <woorl address>]"
     try:

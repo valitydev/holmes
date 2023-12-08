@@ -9,7 +9,9 @@ RUN ./clone-proto-modules.sh /repos
 
 FROM docker.io/library/erlang:${OTP_VERSION}
 
-RUN apt-get --yes update \
+RUN curl -fSsL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor |  tee /usr/share/keyrings/postgresql.gpg > /dev/null \
+    && echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main | tee /etc/apt/sources.list.d/postgresql.list \
+    && apt-get --yes update \
     && apt-get --yes --no-install-recommends install \
         curl \
         bind9-dnsutils \
@@ -21,9 +23,11 @@ RUN apt-get --yes update \
         nano \
         netcat-openbsd \
         jq \
-        postgresql-client-13 \
+        python3-pip \
+        postgresql-client-15 \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install six
 
 # step-cli
 ARG STEP_VERSION
