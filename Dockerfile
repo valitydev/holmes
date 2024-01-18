@@ -7,11 +7,9 @@ WORKDIR /holmes
 RUN make
 RUN ./clone-proto-modules.sh /repos
 
-FROM docker.io/library/erlang:${OTP_VERSION}
+FROM docker.io/library/erlang:${OTP_VERSION}-slim
 
-RUN curl -fSsL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor |  tee /usr/share/keyrings/postgresql.gpg > /dev/null \
-    && echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main | tee /etc/apt/sources.list.d/postgresql.list \
-    && apt-get --yes update \
+RUN apt-get --yes update \
     && apt-get --yes --no-install-recommends install \
         curl \
         bind9-dnsutils \
@@ -24,10 +22,15 @@ RUN curl -fSsL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmo
         netcat-openbsd \
         jq \
         python3-pip \
-        postgresql-client-15 \
+        wget \
+        gnupg \
+    && pip install six \
+    && curl -fSsL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor |  tee /usr/share/keyrings/postgresql.gpg > /dev/null \
+    && echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main | tee /etc/apt/sources.list.d/postgresql.list \
+    && apt-get --yes update \
+    && apt-get --yes --no-install-recommends install postgresql-client-15 \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install six
+    && rm -rf /var/lib/apt/lists/*
 
 # step-cli
 ARG STEP_VERSION
