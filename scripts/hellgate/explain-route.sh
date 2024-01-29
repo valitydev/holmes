@@ -11,7 +11,7 @@ get_explanation () {
     "${WOORL[@]:-woorl}" \
         -s "${DAMSEL}/proto/payment_processing.thrift" \
         "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
-        Invoicing GetExplanationForChosenRoute "$1" "$2"
+        Invoicing ExplainRoute "$1" "$2"
 }
 
 case "$1" in
@@ -24,7 +24,7 @@ case "$1" in
         echo -e "  -h, --help      Show this help message."
         echo
         echo -e "More information:"
-        echo -e "  https://github.com/valitydev/damsel/blob/3df747ff446bdaac8f136faeb75aa3da65281171/proto/payment_processing.thrift#L1055-L1063"
+        echo -e "  https://github.com/valitydev/damsel/blob/decfa45d7ce4b3c948957c6ddba34742aaa9fdc5/proto/payment_processing.thrift#L1055-L1063"
         exit 0
         ;;
     * )
