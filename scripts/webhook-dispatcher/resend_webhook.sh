@@ -19,9 +19,9 @@ case "$1" in
         echo -e "Trying to resend failed webhook given WebhookID, SourceID and EventId."
         echo
         echo -e "Usage: ${SCRIPT_NAME} webhook_id source_id event_id [woorl_opts]"
-        echo -e "  webhook_id      Webhook ID (string)."
+        echo -e "  webhook_id      Webhook ID (number)."
         echo -e "  source_id       Source ID (string)."
-        echo -e "  event_id        Event ID (string)."
+        echo -e "  event_id        Event ID (number)."
         echo -e "  -h, --help      Show this help message."
         echo
         echo -e "More information:"
@@ -29,9 +29,9 @@ case "$1" in
         exit 0
         ;;
     * )
-        WEBHOOK_ID="\"$1\""
+        WEBHOOK_ID="{$1}"
         SOURCE_ID="\"$2\""
-        EVENT_ID="\"$3\""
+        EVENT_ID="{$3}"
         resend_webhook "$WEBHOOK_ID" "$SOURCE_ID" "$EVENT_ID"
         ;;
 esac
