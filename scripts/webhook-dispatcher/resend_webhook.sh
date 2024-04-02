@@ -29,9 +29,9 @@ case "$1" in
         exit 0
         ;;
     * )
-        WEBHOOK_ID="{$1}"
+        WEBHOOK_ID="$1"
         SOURCE_ID="\"$2\""
-        EVENT_ID="{$3}"
+        EVENT_ID="$3"
         resend_webhook "$WEBHOOK_ID" "$SOURCE_ID" "$EVENT_ID"
         ;;
 esac
