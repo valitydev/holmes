@@ -9,8 +9,8 @@ RUN make \
 
 FROM docker.io/library/erlang:${OTP_VERSION}-slim
 
-# hadolint ignore=DL3008,DL3013
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# hadolint ignore=DL3008,DL3013
 RUN apt-get --yes update \
     && apt-get --yes --no-install-recommends install \
         curl \
