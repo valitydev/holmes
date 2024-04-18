@@ -9,6 +9,7 @@ RUN make \
 
 FROM docker.io/library/erlang:${OTP_VERSION}-slim
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get --yes update \
     && apt-get --yes --no-install-recommends install \
         curl \
