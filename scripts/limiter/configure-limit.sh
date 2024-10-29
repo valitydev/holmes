@@ -93,6 +93,7 @@ for s in ${SCOPE[@]}; do
     provider     ) SCOPES="${SCOPES}${SSEP}{\"provider\":{}}" ;;
     terminal     ) SCOPES="${SCOPES}${SSEP}{\"terminal\":{}}" ;;
     email        ) SCOPES="${SCOPES}${SSEP}{\"payer_contact_email\":{}}" ;;
+    sbp-phone    ) SCOPES="${SCOPES}${SSEP}{\"destination_field\":{\"field_path\":[\"phoneNumber\"]}}" ;;
     *            ) usage ;;
   esac
   SSEP=","
