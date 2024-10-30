@@ -48,6 +48,7 @@ CURRENCY="RUB"
 METRIC="amount"
 BEHAVIOUR="addition"
 SHARD_SIZE="1"
+FIELD=""
 
 while true; do
   case "${1}" in
@@ -55,6 +56,7 @@ while true; do
     --time-range              ) TIME_RANGE="${2}" ; shift 2 ;;
     --context                 ) CONTEXT="${2}" ; shift 2 ;;
     --scope                   ) SCOPE+=("${2}") ; shift 2 ;;
+    --scope-field             ) FIELD+=("${2}") ; shift 2 ;;
     --turnover-metric         ) METRIC="${2}" ; shift 2 ;;
     --currency                ) CURRENCY="${2}" ; shift 2 ;;
     --subtraction             ) BEHAVIOUR="subtraction" ; shift 1 ;;
@@ -83,6 +85,12 @@ case "${CONTEXT}" in
 esac
 
 SSEP=""
+for s in ${FIELD[@]}; do
+  FIELDS="${FIELDS}${SSEP}${s}"
+  SSEP=","
+done
+
+SSEP=""
 for s in ${SCOPE[@]}; do
   case "${s}" in
     party        ) SCOPES="${SCOPES}${SSEP}{\"party\":{}}" ;;
@@ -93,7 +101,7 @@ for s in ${SCOPE[@]}; do
     provider     ) SCOPES="${SCOPES}${SSEP}{\"provider\":{}}" ;;
     terminal     ) SCOPES="${SCOPES}${SSEP}{\"terminal\":{}}" ;;
     email        ) SCOPES="${SCOPES}${SSEP}{\"payer_contact_email\":{}}" ;;
-    sbp-phone    ) SCOPES="${SCOPES}${SSEP}{\"destination_field\":{\"field_path\":[\"phoneNumber\"]}}" ;;
+    sbp-phone    ) SCOPES="${SCOPES}${SSEP}{\"destination_field\":{\"field_path\":[${FIELDS}]}}" ;;
     *            ) usage ;;
   esac
   SSEP=","
