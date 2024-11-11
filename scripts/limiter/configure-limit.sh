@@ -20,8 +20,9 @@ Usage: ${SCRIPTNAME} --time-range=<range> [--scope=<scope>] [--turnover-metric=<
   $(em description)               Limit description (string)
   $(em --time-range)              Specify calendar time range ($(em day) | $(em week) | $(em month) | $(em year))
   $(em --context)                 Specify limit context type ($(em payproc) | $(em withdrawal))
-  $(em --scope)                   Specify limit scope ($(em party) | $(em shop) | $(em paytool) | $(em wallet) | $(em identity) | $(em provider) | $(em terminal) | $(em email)) [default: global scope]
+  $(em --scope)                   Specify limit scope ($(em party) | $(em shop) | $(em paytool) | $(em wallet) | $(em identity) | $(em provider) | $(em terminal) | $(em email) | $(em 'destination.<field 1>[.<field N>]')) [default: global scope]
                                    - Multiple scopes are allowed.
+                                   - Destination scope requires at least one element in dot-separated string. E.g. '--scope destination.phoneNumber'. Items after prefix 'destination.' are used as path to discriminator value in nested paytool resource parameters.
   $(em --turnover-metric)         Select turnover metric ($(em number) | $(em amount))
                                    - Metric $(em amount) aggregates operations' amounts denominated in selected currency. [default]
                                    - Metric $(em number) counts number of operations.
@@ -37,6 +38,27 @@ EOF
 function usage {
     echo -e "$USAGE"
     exit 127
+}
+
+function parse_dest_fields {
+    # Transforms value 'destination.path.to.field' from $1 and puts
+    # result '"path","to","field"' into $DEST_FIELDS
+
+    IFS='.'
+    arrITEMS=($1)
+    unset IFS
+
+    if [ ${#arrITEMS[@]} -le 1 ]; then
+        usage
+    fi
+
+    ITEMS=("${arrITEMS[@]:1}")
+    DEST_FIELDS=""
+    SSEP=""
+    for i in ${ITEMS[@]}; do
+        DEST_FIELDS="${DEST_FIELDS}${SSEP}\"${i}\""
+        SSEP=","
+    done
 }
 
 TEMP=$(getopt -o "" --longoptions help,time-range:,context:,scope:,turnover-metric:,currency:,subtraction -n "$SCRIPTNAME" -- "$@")
@@ -85,15 +107,18 @@ esac
 SSEP=""
 for s in ${SCOPE[@]}; do
   case "${s}" in
-    party        ) SCOPES="${SCOPES}${SSEP}{\"party\":{}}" ;;
-    shop         ) SCOPES="${SCOPES}${SSEP}{\"shop\":{}}" ;;
-    wallet       ) SCOPES="${SCOPES}${SSEP}{\"wallet\":{}}" ;;
-    identity     ) SCOPES="${SCOPES}${SSEP}{\"identity\":{}}" ;;
-    paytool      ) SCOPES="${SCOPES}${SSEP}{\"payment_tool\":{}}" ;;
-    provider     ) SCOPES="${SCOPES}${SSEP}{\"provider\":{}}" ;;
-    terminal     ) SCOPES="${SCOPES}${SSEP}{\"terminal\":{}}" ;;
-    email        ) SCOPES="${SCOPES}${SSEP}{\"payer_contact_email\":{}}" ;;
-    *            ) usage ;;
+    party         ) SCOPES="${SCOPES}${SSEP}{\"party\":{}}" ;;
+    shop          ) SCOPES="${SCOPES}${SSEP}{\"shop\":{}}" ;;
+    wallet        ) SCOPES="${SCOPES}${SSEP}{\"wallet\":{}}" ;;
+    identity      ) SCOPES="${SCOPES}${SSEP}{\"identity\":{}}" ;;
+    paytool       ) SCOPES="${SCOPES}${SSEP}{\"payment_tool\":{}}" ;;
+    provider      ) SCOPES="${SCOPES}${SSEP}{\"provider\":{}}" ;;
+    terminal      ) SCOPES="${SCOPES}${SSEP}{\"terminal\":{}}" ;;
+    email         ) SCOPES="${SCOPES}${SSEP}{\"payer_contact_email\":{}}" ;;
+    destination.* ) DEST_FIELDS=""
+                    parse_dest_fields $s
+                    SCOPES="${SCOPES}${SSEP}{\"destination_field\":{\"field_path\":[${DEST_FIELDS}]}}" ;;
+    *             ) usage ;;
   esac
   SSEP=","
 done
