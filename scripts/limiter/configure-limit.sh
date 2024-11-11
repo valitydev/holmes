@@ -54,10 +54,10 @@ function parse_dest_fields {
 
     ITEMS=("${arrITEMS[@]:1}")
     DEST_FIELDS=""
-    SSEP=""
+    F_SSEP=""
     for i in ${ITEMS[@]}; do
-        DEST_FIELDS="${DEST_FIELDS}${SSEP}\"${i}\""
-        SSEP=","
+        DEST_FIELDS="${DEST_FIELDS}${F_SSEP}\"${i}\""
+        F_SSEP=","
     done
 }
 
