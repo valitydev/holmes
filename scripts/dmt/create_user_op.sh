@@ -11,7 +11,7 @@ EMAIL=${1}
 
 NAME=${1}
 
-USER_OP_PARAMS=$(cat <<END
+AUTHOR_PARAMS=$(cat <<END
 {
   "email": "${EMAIL}",
   "name": "${NAME}"
@@ -19,5 +19,5 @@ USER_OP_PARAMS=$(cat <<END
 END
 )
 
-woorl -s "damsel/proto/domain_config_v2.thrift" "http://dmt:8022/v1/domain/user_op" UserOpManagement Create "${USER_OP_PARAMS}" |
+woorl -s "damsel/proto/domain_config_v2.thrift" "http://dmt:8022/v1/domain/author" AuthorManagement Create "${AUTHOR_PARAMS}" |
 jq -r '.id'
