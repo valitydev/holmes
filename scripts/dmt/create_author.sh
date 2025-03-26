@@ -19,5 +19,5 @@ AUTHOR_PARAMS=$(cat <<END
 END
 )
 
-woorl -s "damsel/proto/domain_config_v2.thrift" "http://dmt:8022/v1/domain/author" AuthorManagement Create "${AUTHOR_PARAMS}" |
+woorl -s "damsel/proto/domain_config_v2.thrift" "http://${DMT:-dmt}:8022/v1/domain/author" AuthorManagement Create "${AUTHOR_PARAMS}" |
 jq -r 'if .exception == "AuthorAlreadyExists" then .data.id else .id end'
