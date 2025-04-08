@@ -27,6 +27,7 @@ usage () {
 }
 
 reopen_chargeback() {
+    echo -e "$(info Reopenning)..."
     "${WOORL[@]:-woorl}" \
         -s "${DAMSEL}/proto/payment_processing.thrift" \
         "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
@@ -34,6 +35,7 @@ reopen_chargeback() {
 }
 
 cancel_chargeback() {
+    echo -e "$(info Cancelling)..."
     "${WOORL[@]:-woorl}" \
         -s "${DAMSEL}/proto/payment_processing.thrift" \
         "http://${HELLGATE:-hellgate}:8022/v1/processing/invoicing" \
@@ -49,9 +51,9 @@ case "$1" in
         PAYMENT_ID="\"$2\""
         CHARGEBACK_ID="\"$3\""
         reopen_chargeback "$INVOICE_ID" "$PAYMENT_ID" "$CHARGEBACK_ID"
-        echo -n "Chargeback $CHARGEBACK_ID $(info reopened)."
+        echo -e "Chargeback $(em reopened)."
         cancel_chargeback "$INVOICE_ID" "$PAYMENT_ID" "$CHARGEBACK_ID"
-        echo -n "Chargeback $CHARGEBACK_ID $(info canceled)."
-        echo -n "$(info Done.)"
+        echo -e "Chargeback $(em canceled)."
+        echo -e "$(info Done)."
         ;;
 esac
