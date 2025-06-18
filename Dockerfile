@@ -30,7 +30,7 @@ RUN apt-get --yes update \
     && wget -O - -q https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor |  tee /usr/share/keyrings/postgresql.gpg > /dev/null \
     && echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main | tee /etc/apt/sources.list.d/postgresql.list \
     && apt-get --yes update \
-    && apt-get --yes --no-install-recommends install postgresql-client-15 \
+    && apt-get --yes --no-install-recommends install postgresql-client-17 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
