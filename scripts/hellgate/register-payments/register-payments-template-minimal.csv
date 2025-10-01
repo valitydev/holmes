@@ -1,0 +1,4 @@
+invoice_id,party_id,shop_id,product,amount,currency,provider_id,terminal_id,provider_transaction_id,recurrent_token,card_token,card_bin,card_last_digits
+INV-001,party123,shop456,Test Product,10000,RUB,1,1,TRX-123456,recurrent_token_abc123,card_token_xyz789,411111,1111
+
+
