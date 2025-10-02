@@ -24,11 +24,11 @@ RUN apt-get --yes update \
         netcat-openbsd \
         jq \
         python3-pip \
+        python3-six \
         wget \
         gnupg \
-    && pip install --no-cache-dir six \
     && wget -O - -q https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor |  tee /usr/share/keyrings/postgresql.gpg > /dev/null \
-    && echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main | tee /etc/apt/sources.list.d/postgresql.list \
+    && echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main | tee /etc/apt/sources.list.d/postgresql.list \
     && apt-get --yes update \
     && apt-get --yes --no-install-recommends install postgresql-client-17 \
     && apt-get clean \
