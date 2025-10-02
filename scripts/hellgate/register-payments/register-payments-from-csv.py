@@ -43,7 +43,7 @@ import json
 import subprocess
 import argparse
 import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Optional
 
 
 def parse_args():
