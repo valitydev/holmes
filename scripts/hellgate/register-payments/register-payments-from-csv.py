@@ -90,7 +90,11 @@ def get_woorl_cmd():
             capture_output=True,
             text=True
         )
-        return result.stdout.strip().split()
+        cmd = result.stdout.strip().split()
+        # If empty or only whitespace, return default
+        if not cmd or not cmd[0]:
+            return ['woorl']
+        return cmd
     except Exception:
         return ['woorl']
 
@@ -235,7 +239,7 @@ def register_payment(row: Dict[str, str], service_url: str, proto_path: str,
     
     result = woorl_call(
         service_url, proto_path, 'Invoicing', 'RegisterPayment',
-        row['invoice_id'], params, dry_run=dry_run, verbose=verbose
+        json.dumps(row['invoice_id']), params, dry_run=dry_run, verbose=verbose
     )
     
     if result is None and not dry_run:
@@ -269,11 +273,22 @@ def validate_row(row: Dict[str, str], row_num: int, skip_invoice: bool = False) 
 def process_csv(csv_file: str, args):
     """Process CSV file and create invoices/register payments"""
     # Determine paths
-    script_dir = os.path.dirname(os.path.abspath(__file__))
     if args.damsel_proto:
         proto_path = args.damsel_proto
     else:
-        proto_path = os.path.join(script_dir, '..', '..', '..', 'damsel', 'proto', 'payment_processing.thrift')
+        # Try to find damsel from current working directory (scripts run from project root)
+        # or from script directory (for backwards compatibility)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        cwd_proto = os.path.join(os.getcwd(), 'damsel', 'proto', 'payment_processing.thrift')
+        script_proto = os.path.join(script_dir, '..', '..', '..', 'damsel', 'proto', 'payment_processing.thrift')
+        
+        if os.path.exists(cwd_proto):
+            proto_path = cwd_proto
+        elif os.path.exists(script_proto):
+            proto_path = script_proto
+        else:
+            # Last resort: use relative path from cwd
+            proto_path = 'damsel/proto/payment_processing.thrift'
     
     # Build service URL
     hellgate_host = args.hellgate_host or os.environ.get('HELLGATE', 'hellgate')

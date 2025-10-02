@@ -1,4 +1,4 @@
 invoice_id,party_id,shop_id,product,amount,currency,provider_id,terminal_id,provider_transaction_id,recurrent_token,card_token,card_bin,card_last_digits,card_payment_system,cardholder_name,card_exp_month,card_exp_year,contact_email,contact_phone,external_id,payment_id,due,context_type,context_data
-INV-001,party123,shop456,Test Product,10000,RUB,1,1,TRX-123456,recurrent_token_abc123,card_token_xyz789,411111,1111,visa,IVAN IVANOV,12,2025,test@example.com,+79001234567,EXT-001,1,2030-12-31T23:59:59Z,empty,
+INV-001,party123,shop456,Test Product,10000,RUB,1,1,TRX-123456,recurrent_token_abc123,card_token_xyz789,411111,1111,VISA,IVAN IVANOV,12,2025,test@example.com,+79001234567,EXT-001,1,2030-12-31T23:59:59Z,empty,
 
 
