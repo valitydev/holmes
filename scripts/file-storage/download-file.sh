@@ -81,20 +81,23 @@ function timestamp_after {
     || date -u -r "${epoch}" +%Y-%m-%dT%H:%M:%SZ
 }
 
-FILE_DATA=$(file_storage GetFileData "\"${FILE_ID}\"") \
-  || err "Failed to get data of file $(em ${FILE_ID})" >&2
-
-FILE_NAME=$(basename "$(echo "${FILE_DATA}" | jq -r '.file_name // empty')")
-[ -z "${FILE_NAME}" -o "${FILE_NAME}" = "/" -o "${FILE_NAME}" = "." -o "${FILE_NAME}" = ".." ] \
-  && FILE_NAME="${FILE_ID}"
-
 EXPIRES_AT="$(timestamp_after ${URL_TTL})"
 DOWNLOAD_URL=$(file_storage GenerateDownloadUrl "\"${FILE_ID}\"" "\"${EXPIRES_AT}\"" | jq -r .) \
   || err "Failed to generate download url for file $(em ${FILE_ID})" >&2
 
+# File name is optional: file-storage fails GetFileData for files uploaded
+# without 'Content-Disposition' header, though the file itself is available.
+FILE_DATA=$(file_storage GetFileData "\"${FILE_ID}\"" 2>/dev/null) \
+  || warn "Failed to get data of file $(em ${FILE_ID}), using file ID as its name" >&2
+
+FILE_NAME=$(basename "$(echo "${FILE_DATA}" | jq -r '.file_name // empty' 2>/dev/null)")
+[ -z "${FILE_NAME}" -o "${FILE_NAME}" = "/" -o "${FILE_NAME}" = "." -o "${FILE_NAME}" = ".." ] \
+  && FILE_NAME="${FILE_ID}"
+CREATED_AT=$(echo "${FILE_DATA}" | jq -r '.created_at // empty' 2>/dev/null || true)
+
 if [ -z "${DOWNLOAD}" ]; then
   echo "File:       ${FILE_NAME}"
-  echo "Created at: $(echo "${FILE_DATA}" | jq -r '.created_at // empty')"
+  [ -n "${CREATED_AT}" ] && echo "Created at: ${CREATED_AT}"
   echo "Expires at: ${EXPIRES_AT}"
   echo "URL:        ${DOWNLOAD_URL}"
   exit 0
