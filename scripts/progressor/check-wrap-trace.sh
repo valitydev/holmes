@@ -43,4 +43,20 @@ then
     err "exception payload should fail"
 fi
 
+IDS=$(jq -f "${CWD}/session-ids.jq" <<'EOF'
+{
+  "trace": [
+    {"events": [{"payload": {"withdrawal": {"change": {"session": {"id": "s-2", "payload": {"started": {}}}}}}}, {"payload": {"adjustment": {"id": "adj-1"}}}]},
+    {"events": [{"payload": {"session": {"id": "s-1", "payload": {"finished": {"result": {"succeeded": {}}}}}}}, {"payload": {"withdrawal": {"change": {"session": {"id": "s-2", "payload": {"finished": {}}}}}}}, {"payload": {"session": {"id": ""}}}]}
+  ]
+}
+EOF
+) || err "session id extraction failed."
+
+echo "${IDS}" | jq -e '. == ["s-2","s-1"]' >/dev/null \
+    || err "expected first-seen session ids s-2, s-1"
+
+jq -f "${CWD}/session-ids.jq" "${CWD}/testdata/sample.trace.json" | jq -e '. == []' >/dev/null \
+    || err "sample trace should have no session ids"
+
 echo "ok"
