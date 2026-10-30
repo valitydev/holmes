@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "meta": {
+    "backend": "hg",
+    "namespace": "invoice",
+    "process_id": "inv-1",
+    "otel_trace_ids": ["bbb222", "aaa111"]
+  },
+  "trace": [
+    {
+      "header": {
+        "task_id": 1,
+        "task_type": "init",
+        "task_status": "finished",
+        "scheduled": 1710000000000000,
+        "running": 1710000000100000,
+        "finished": 1710000000200000,
+        "retry_attempts": 0,
+        "retry_interval": 0,
+        "otel_trace_id": "bbb222"
+      },
+      "body": {
+        "thrift_call": {
+          "service_name": "Invoicing",
+          "function_name": "Create",
+          "params": {
+            "type": "application/json",
+            "data": {
+              "invoice_id": "inv-1",
+              "amount": 100
+            }
+          }
+        }
+      },
+      "events": [
+        {
+          "event_id": 1,
+          "event_timestamp": 1710000000200000,
+          "payload": {
+            "invoice_changes": []
+          }
+        }
+      ]
+    },
+    {
+      "header": {
+        "task_id": 2,
+        "task_type": "notify",
+        "task_status": "finished",
+        "retry_attempts": 0,
+        "retry_interval": 0,
+        "otel_trace_id": "aaa111"
+      },
+      "body": {
+        "content": {
+          "type": "application/json; charset=utf-8",
+          "data": {
+            "withdrawal_id": "wd-1",
+            "status": "pending"
+          }
+        }
+      },
+      "events": [
+        {
+          "event_id": 1,
+          "event_timestamp": 1710000000300000,
+          "payload": {
+            "withdrawal": {
+              "change": {
+                "created": {}
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": {
+        "task_id": 3,
+        "task_type": "timeout",
+        "task_status": "finished",
+        "retry_attempts": 0,
+        "retry_interval": 0,
+        "otel_trace_id": "aaa111"
+      },
+      "body": {
+        "thrift_call": {
+          "service_name": "Invoicing",
+          "function_name": "Repair",
+          "params": {
+            "type": "application/json",
+            "data": "not-json{"
+          }
+        }
+      },
+      "events": []
+    }
+  ]
+}
