@@ -21,6 +21,7 @@ RUN apt-get --yes update \
         iputils-tracepath \
         less \
         nano \
+        vim \
         netcat-openbsd \
         jq \
         python3-pip \
