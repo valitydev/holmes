@@ -21,6 +21,8 @@ Usage: ${SCRIPTNAME} INVOICE_ID PAYMENT_ID
     ${SCRIPTNAME} 2L4zRGVWsGO 1 > 2L4zRGVWsGO.route.json
 
   Only stdout is the attachment body (response.txt). Errors go to stderr.
+  ExplainRoute JSON is small; stdout is padded so Botkube uploads response.txt
+  (Mattermost inline limit is 3990 bytes in Botkube).
 
 Environment:
   HELLGATE     Hellgate host (default: hellgate)
@@ -48,10 +50,27 @@ PAYMENT_ID="${2:-}"
 [ -z "${INVOICE_ID}" ] || [ -z "${PAYMENT_ID}" ] && usage 127
 [ "$#" -gt 2 ] && usage 127
 
-[ -f woorlrc ] && source woorlrc
+HOLMES_ROOT="$(cd "${CWD}/../.." && pwd)"
+[ -f "${HOLMES_ROOT}/woorlrc" ] && source "${HOLMES_ROOT}/woorlrc"
 
 PORT="${PORT:-8022}"
 HELLGATE="${HELLGATE:-hellgate}"
+
+# kubeshop/botkube pkg/bot/mattermost.go mattermostMaxMessageSize
+BOTKUBE_MATTERMOST_FILE_THRESHOLD=3990
+
+function ensure_botkube_file_upload {
+    local json size need pad
+    json=$(cat)
+    size=${#json}
+    if [ "${size}" -ge "${BOTKUBE_MATTERMOST_FILE_THRESHOLD}" ]; then
+        printf '%s\n' "${json}"
+        return
+    fi
+    need=$((BOTKUBE_MATTERMOST_FILE_THRESHOLD - size + 64))
+    pad=$(printf '%*s' "${need}" '')
+    printf '%s\n' "${json}" | jq --arg pad "${pad}" '. + {_botkube_file_padding: $pad}'
+}
 
 function is_route_not_chosen {
     local raw="$1"
@@ -80,7 +99,7 @@ function emit_explanation {
         err "ExplainRoute did not return JSON."
     fi
     if is_route_not_chosen "${raw}"; then
-        printf '%s\n' "${raw}" | jq .
+        printf '%s\n' "${raw}" | jq . | ensure_botkube_file_upload
         return 0
     fi
     local failure
@@ -100,7 +119,7 @@ function emit_explanation {
                 invoice_id: $invoice_id,
                 payment_id: $payment_id
             }
-        }'
+        }' | ensure_botkube_file_upload
 }
 
 raw=$("${WOORL[@]:-woorl}" \
