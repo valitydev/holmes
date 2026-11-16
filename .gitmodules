@@ -35,3 +35,6 @@
 	path = file-storage-proto
 	url = https://github.com/valitydev/file-storage-proto.git
 	branch = master
+[submodule "bouncer-proto"]
+	path = bouncer-proto
+	url = https://github.com/valitydev/bouncer-proto
